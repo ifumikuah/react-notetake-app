@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import Modal from "react-modal";
-import './App.css'
+import "./App.css";
 
-const modalStyles = {
+const customStyles = {
   content: {
     top: "50%",
     left: "50%",
@@ -19,7 +19,7 @@ export default function App() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState("");
-  const idRef = useRef(null)
+  const idRef = useRef(null);
 
   const addNote = () => {
     const store = {
@@ -37,15 +37,30 @@ export default function App() {
 
   const addTag = () => {
     const store = [];
-    store.push(tag);
+    store.push(tag.toLowerCase());
 
-    setTags((prevTags) => [...prevTags, store]);
+    setTags((prevTags) => [...prevTags, ...store]);
     setTag("");
   };
 
   const removeTag = (id) => {
-    setTags(prevTags => prevTags.filter((_, i) => id !== i))
-  }
+    setTags((prevTags) => prevTags.filter((_, i) => id !== i));
+  };
+
+  const listAllTag = () => {
+    let allTags = [];
+  
+    notes.forEach((x) =>
+      x.tags.forEach((y) => {
+        if (allTags.includes(y)) {
+          allTags.splice(allTags.indexOf(y), 1).push(y)
+        }
+        allTags.push(y)
+      })
+    );
+
+    return allTags;
+  };
 
   const applyEdit = () => {
     const store = {
@@ -55,15 +70,15 @@ export default function App() {
       tags: tags,
     };
 
-    setNotes( prevNotes => 
+    setNotes((prevNotes) =>
       prevNotes.map((note, id) => {
         if (id === idRef.current) {
-          return store
+          return store;
         }
-        return note
+        return note;
       })
-    )
-  }
+    );
+  };
 
   // Add Modals
 
@@ -79,24 +94,35 @@ export default function App() {
 
   // Add Modals
   // Edit Modals
-  const [editIsOpen, setEditIsOpen] = useState(false)
+  const [editIsOpen, setEditIsOpen] = useState(false);
 
   function openEditModal(id) {
-    idRef.current = id
-    setTitle(notes[id].title)
-    setContent(notes[id].content)
-    setTags(notes[id].tags)
-    setEditIsOpen(id)
+    idRef.current = id;
+    setTitle(notes[id].title);
+    setContent(notes[id].content);
+    setTags(notes[id].tags);
+    setEditIsOpen(id);
   }
 
   function closeEditModal(id) {
-    setEditIsOpen(!id)
+    setEditIsOpen(!id);
+    setTitle("");
+    setContent("");
+    setTags([]);
   }
 
   // Edit
 
   return (
     <>
+      <div>
+        <p> Available tags </p>
+        {listAllTag()
+          .reverse()
+          .map((x, i) => (
+            <span key={i}> {x} </span>
+          ))}
+      </div>
       <div>
         {notes.map((n) => (
           <li key={n.id}>
@@ -107,7 +133,7 @@ export default function App() {
                 <Modal
                   isOpen={editIsOpen === n.id}
                   onRequestClose={() => closeEditModal(n.id)}
-                  style={modalStyles}
+                  style={customStyles}
                   contentLabel="Edit Modal"
                   ariaHideApp={false}
                 >
@@ -127,7 +153,16 @@ export default function App() {
                     <button onClick={applyEdit}>Add Note</button>
                   </div>
                   <div>
-                    {tags.map( (tag, i) => <span className="tag" key={i} onClick={() => removeTag(i)}> {tag} </span>)}
+                    {tags.map((tag, i) => (
+                      <span
+                        className="tag"
+                        key={i}
+                        onClick={() => removeTag(i)}
+                      >
+                        {" "}
+                        {tag}{" "}
+                      </span>
+                    ))}
                     <input
                       type="text"
                       placeholder="Tag"
@@ -146,7 +181,7 @@ export default function App() {
           <Modal
             isOpen={addModalIsOpen}
             onRequestClose={closeAddModal}
-            style={modalStyles}
+            style={customStyles}
             contentLabel="Add Modal"
             ariaHideApp={false}
           >
