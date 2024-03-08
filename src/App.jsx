@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import Modal from "react-modal";
 import "./App.css";
 
-const customStyles = {
+const modalStyles = {
   content: {
     top: "50%",
     left: "50%",
@@ -13,8 +13,38 @@ const customStyles = {
   },
 };
 
+const note0 = {
+  id: 0,
+  title: "First note",
+  content: "Contains about first note",
+  tags: ["one", "two", "seven"],
+}
+
+const note1 = {
+  id: 1,
+  title: "Second note",
+  content: "Contains about second note",
+  tags: ["one", "three", "four"],
+}
+
+const note2 = {
+  id: 2,
+  title: "Third note",
+  content: "Contains about third note",
+  tags: ["two", "five", "six", "one"],
+}
+
+const note3 = {
+  id: 3,
+  title: "Fourth note",
+  content: "Contains about fourth note",
+  tags: ["seven", "eight", "nine", "four"],
+}
+
+const allexamplenotes = [note0, note1, note2, note3]
+
 export default function App() {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState([...allexamplenotes]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
@@ -49,13 +79,13 @@ export default function App() {
 
   const listAllTag = () => {
     let allTags = [];
-  
+
     notes.forEach((x) =>
       x.tags.forEach((y) => {
         if (allTags.includes(y)) {
-          allTags.splice(allTags.indexOf(y), 1).push(y)
+          allTags.splice(allTags.indexOf(y), 1).push(y);
         }
-        allTags.push(y)
+        allTags.push(y);
       })
     );
 
@@ -114,16 +144,21 @@ export default function App() {
   // Edit
 
   return (
-    <>
-      <div>
-        <p> Available tags </p>
-        {listAllTag()
-          .reverse()
-          .map((x, i) => (
-            <span key={i}> {x} </span>
-          ))}
+    <div className="App">
+      <div className="App_side">
+        <div className="App_header">
+          <h1 className="App_title">Notetake</h1>
+        </div>
+        <div className="query_container">
+          <input type="text"/>
+        </div>
+          {listAllTag()
+            .reverse()
+            .map((x, i) => (
+              <span key={i}> {x} </span>
+            ))}
       </div>
-      <div>
+      <div className="App_main">
         {notes.map((n) => (
           <li key={n.id}>
             {n.id} {n.title} Tags: {n.tags.join(", ")}{" "}
@@ -133,7 +168,7 @@ export default function App() {
                 <Modal
                   isOpen={editIsOpen === n.id}
                   onRequestClose={() => closeEditModal(n.id)}
-                  style={customStyles}
+                  style={modalStyles}
                   contentLabel="Edit Modal"
                   ariaHideApp={false}
                 >
@@ -181,7 +216,7 @@ export default function App() {
           <Modal
             isOpen={addModalIsOpen}
             onRequestClose={closeAddModal}
-            style={customStyles}
+            style={modalStyles}
             contentLabel="Add Modal"
             ariaHideApp={false}
           >
@@ -201,6 +236,12 @@ export default function App() {
               <button onClick={addNote}>Add Note</button>
             </div>
             <div>
+              {tags.map((tag, i) => (
+                <span className="tag" key={i} onClick={() => removeTag(i)}>
+                  {" "}
+                  {tag}{" "}
+                </span>
+              ))}
               <input
                 type="text"
                 placeholder="Tag"
@@ -212,8 +253,6 @@ export default function App() {
           </Modal>
         </div>
       </div>
-
-      <div></div>
-    </>
+    </div>
   );
 }

@@ -1,3 +1,21 @@
 .edit_modal {
   display: inline;
 }
+
+.App {
+  width: 1000px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.App_side {
+  flex: 1;
+}
+
+.App_main {
+  flex: 3;
+}
+
+.App_title {
+  font-weight: 600;
+}
