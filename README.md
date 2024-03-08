@@ -1,8 +1,21 @@
-# React + Vite
+# Notetake
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Notetake**, Webapp catatan sederhana
 
-Currently, two official plugins are available:
+## Fitur
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Modal
+
+- Tags
+
+- Query (by tags)
+
+- Add, edit dan remove item.
+
+- Toggle dark mode (*coming soon*)
+
+## External packages/modules
+
+- `react-modal` digunakan untuk membuat modal edit task.
+
+## Etc
