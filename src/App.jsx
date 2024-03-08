@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import Modal from "react-modal";
 import './App.css'
 
-const customStyles = {
+const modalStyles = {
   content: {
     top: "50%",
     left: "50%",
@@ -13,15 +13,8 @@ const customStyles = {
   },
 };
 
-const note0 = {
-  id: 0,
-  title: "Alpha Bravo",
-  content: "This is a note about the NATO phonetic alphabet.",
-  tags: ["Alpha", "Bravo", "Charlie"],
-};
-
 export default function App() {
-  const [notes, setNotes] = useState([note0]);
+  const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
@@ -114,7 +107,7 @@ export default function App() {
                 <Modal
                   isOpen={editIsOpen === n.id}
                   onRequestClose={() => closeEditModal(n.id)}
-                  style={customStyles}
+                  style={modalStyles}
                   contentLabel="Edit Modal"
                   ariaHideApp={false}
                 >
@@ -153,7 +146,7 @@ export default function App() {
           <Modal
             isOpen={addModalIsOpen}
             onRequestClose={closeAddModal}
-            style={customStyles}
+            style={modalStyles}
             contentLabel="Add Modal"
             ariaHideApp={false}
           >
